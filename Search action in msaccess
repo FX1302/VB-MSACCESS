@@ -1,0 +1,71 @@
+  Dim strqry As String
+   Dim counter As Integer
+     
+  If (Trim(Cmb_Area_Recruit.Value) <> "") Then
+       strqry = "[Area_Recruit] = '" & Cmb_Area_Recruit.Value & "'"
+     counter = 1
+   End If
+   
+   If (Trim(cmb_nsh.Value) <> "") Then
+       If counter > 0 Then
+       strqry = strqry & " AND "
+       End If
+       strqry = strqry & "NSH = '" & cmb_nsh.Value & "'"
+       counter = 2
+    End If
+   
+   
+    If (Trim(cmb_rsm.Value) <> "") Then
+       If counter > 0 Then
+       strqry = strqry & " AND "
+       End If
+       strqry = strqry & "RSM = '" & cmb_rsm.Value & "'"
+       counter = 2
+    End If
+   
+  If (Trim(txt_nama.Value) <> "") Then
+      If counter > 0 Then
+       strqry = strqry & " AND "
+      End If
+       strqry = strqry & " [NAME_IN_KTP] LIKE '*" & txt_nama.Value & "*'"
+       counter = 1
+  End If
+  
+   If (Trim(txt_noktp.Value) <> "") Then
+      If counter > 0 Then
+       strqry = strqry & " AND "
+      End If
+       strqry = strqry & " No_KTP LIKE '*" & txt_noktp.Value & "*'"
+       counter = 1
+  End If
+   
+ ' If (Trim(FILTER_CMB_GENDER.Value) <> "") Then
+ '     If counter > 0 Then
+ '     strqry = strqry & " AND "
+ '     End If
+      
+ '     strqry = strqry & "[GENDER] = '" & FILTER_CMB_GENDER.Value & "'"
+ '     counter = 1
+ '  End If
+      
+ '       If (Trim(FILTER_TXT_CITIZEN.Value) <> "") Then
+ '     If counter > 0 Then
+ '     strqry = strqry & " AND "
+ '     End If
+      
+ '     strqry = strqry & "[CITIZEN] LIKE '*" & FILTER_TXT_CITIZEN.Value & "*'"
+ '     counter = 1
+ '  End If
+      
+  '           If (Trim(FILTER_TXT_ADDRESS.Value) <> "") Then
+  '    If counter > 0 Then
+  '    strqry = strqry & " AND "
+  '    End If
+      
+  '    strqry = strqry & "[ADDRESS] LIKE '*" & FILTER_TXT_ADDRESS.Value & "*'"
+  '    counter = 1
+  ' End If
+      
+   Me.[SUBFORM_AGENCY_SEARCHING].Form.Filter = strqry
+   Me.[SUBFORM_AGENCY_SEARCHING].Form.FilterOn = True
+   Me.[SUBFORM_AGENCY_SEARCHING].Form.Requery
