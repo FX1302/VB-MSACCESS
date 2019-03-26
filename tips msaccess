@@ -1,0 +1,8 @@
+   open form in modal dialog
+   ------------------------------
+   DoCmd.OpenForm "F_SUP_DOC", acNormal, , , , acDialog, Txt_No_KTP.Value & "|" & Txt_Name_KTP.Value
+   
+   
+   
+   
+     
