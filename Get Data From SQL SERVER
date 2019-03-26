@@ -1,0 +1,51 @@
+Public Sub getDatafromBranches_admin()
+DoCmd.RunSQL (" DELETE FROM [YOUR TABLE NAME]")
+Dim ext_rs_brt2 As ADODB.Recordset
+  Set X = GetNewConnection()
+     Dim objCmd7 As New ADODB.Command
+     Dim hasil As String
+     ''If IsNull(dob) Then
+        '' dob = Null
+     'End If
+     Dim current_date As Date
+     current_date = Date
+     With objCmd7
+         .ActiveConnection = X
+         .CommandType = adCmdStoredProc
+         .CommandText = "[YOUR SP NAME]"
+         .CommandTimeout = 10000
+          Set ext_rs_brt2 = .Execute
+      End With
+
+Set access_con_brt2 = GetCurrentConnection()
+Dim rsAccess_brt2 As New ADODB.Recordset
+rsAccess_brt2.CursorLocation = adUseClient
+rsAccess_brt2.Open "select * from [TABLENMAE] WHERE [FIELD_NAME] = '0'", access_con_brt2, adOpenDynamic, adLockBatchOptimistic
+rsAccess_brt2.ActiveConnection = Nothing
+access_con_brt2.Close
+Set access_con_brt2 = Nothing
+Dim arrWsNames() As String
+maxclmn = ext_rs_brt2.Fields.Count
+Dim dataset_brt As ADODB.Recordset
+  Dim myquery_brt As String
+  Dim initial_brt As Integer
+  initial_brt = 1
+      Do While Not ext_rs_brt2.EOF
+         rsAccess_brt2.AddNew
+           For i = 0 To maxclmn - 1
+              If IsNull(ext_rs_brt2.Fields(i)) = False Then
+            rsAccess_brt2(i) = CStr(ext_rs_brt2.Fields(i))
+              
+             Else
+            rsAccess_brt2(i) = (ext_rs_brt2.Fields(i))
+              
+              End If
+              
+           Next i
+        ext_rs_brt2.MoveNext
+      Loop
+Set access_con_brt2 = GetCurrentConnection()
+rsAccess_brt2.ActiveConnection = access_con_brt2
+rsAccess_brt2.UpdateBatch
+rsAccess_brt2.Close
+End Sub
