@@ -1,0 +1,41 @@
+
+open form in modal dialog
+-------------------------
+DoCmd.OpenForm "F_SUP_DOC", acNormal, , , , acDialog, Txt_No_KTP.Value & "|" & Txt_Name_KTP.Value
+   
+
+setoff notification warning
+-------
+DoCmd.SetWarnings False
+
+
+accessing control in other form
+-------------------------------
+ Forms!F_NEWPOLICY!TXT_POLICY_HOLDER_NAME = Me.Customer
+
+
+
+calling sp in msaccess 
+-----------------------
+Public Function InsertUserList(ByVal username As String, ByVal password As String, ByVal role As String, ByVal active_ As String, ByVal area As String, ByVal type_id As String) As String
+  Dim dataset As ADODB.Recordset
+  Set X = GetNewConnection()
+     Dim objCmd7 As New ADODB.Command
+     With objCmd7
+         .ActiveConnection = X
+         .CommandType = adCmdStoredProc
+         .CommandText = "[your spname]"
+         .CommandTimeout = 10000
+         .Parameters.Append .CreateParameter("@USERNAME", adVarChar, adParamInput, 50, username)
+         .Parameters.Append .CreateParameter("@PASSWORD", adVarChar, adParamInput, 50, password)
+         .Parameters.Append .CreateParameter("@ROLE", adVarChar, adParamInput, 10, role)
+         .Parameters.Append .CreateParameter("@ACTIVE", adVarChar, adParamInput, 3, active_)
+         .Parameters.Append .CreateParameter("@AREA", adVarChar, adParamInput, 20, area)
+         .Parameters.Append .CreateParameter("@TYPE", adVarChar, adParamInput, 10, type_id)
+         
+         '' 0 gagal
+         '' 1 berhasil.
+              Set dataset = .Execute
+            InsertUserList = dataset.Fields("HASIL").Value
+      End With
+End Function
